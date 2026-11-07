@@ -1,0 +1,47 @@
+{
+    "version": "4.1.4",
+    "description": "JHYY (机会翼游) — statically-typed language + bootstrapping compiler for Windows",
+    "homepage": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler",
+    "license": {
+        "identifier": "MIT",
+        "url": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler/blob/main/LICENSE"
+    },
+    "depends": "",
+    "url": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler/releases/download/v4.1.4/jhyy-installer-4.1.4.exe",
+    "hash": "cdfcc14517671c3a1a00afe194d9bd2bb1f451cd5f612125f2fa195d5f0e1705",
+    "shortcuts": [
+        ["JHYY Compiler", "C:\\Program Files\\JHYY\\bin\\jhyy.exe", ""],
+        ["JHYY Documentation", "C:\\Program Files\\JHYY\\common\\JHYY Documentation.url", ""],
+        ["JHYY Quick Start", "C:\\Program Files\\JHYY\\common\\JHYY Quick Start.url", ""]
+    ],
+    "persist": [
+        "C:\\Program Files\\JHYY\\vscode-ext"
+    ],
+    "notes": [
+        "This installer is per-machine: it writes to C:\\Program Files\\JHYY and to the HKLM PATH.",
+        "Scoop is per-user by default — run `scoop install jhyy --global` from an elevated shell, or accept the UAC prompt during install.",
+        "v4.1.0+: MSYS2 is NO LONGER required — the installer ships a minimal native ucrt64 toolchain (gcc + binutils + CRT + headers) under C:\\Program Files\\JHYY\\toolchain\\, so `jhyy compile hello.jhyy` works on a bare Windows machine. To use your own gcc instead, set JHY_GCC=<full path to gcc.exe> or put 'JHY_GCC=<full path>' into %JHYY_HOME%\\env.txt.",
+        "After install, `where jhyy` should list it under Program Files.",
+        "The installer is unsigned — Windows SmartScreen will show an 'Unknown publisher' warning."
+    ],
+    "uninstaller": {
+        "script": [
+            "# Burn bundle uninstall — the MSI underneath it (per-machine ⇒ needs elevation).",
+            "# That GUID is the MSI's UpgradeCode (stable across releases), not the per-build",
+            "# ProductCode — msiexec /x resolves it to whichever product is currently installed.",
+            "# See installer/GUIDS.md. Or: Settings -> Apps -> JHYY Compiler -> Uninstall.",
+            "msiexec /x {FC3FC7FC-3479-43EB-A64D-490BAEB32066} /quiet"
+        ]
+    },
+    "checkver": {
+        "url": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler/tags",
+        "regex": "releases/tag/v([\\d.]+)"
+    },
+    "autoupdate": {
+        "url": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler/releases/download/v$version/jhyy-installer-$version.exe",
+        "hash": {
+            "url": "https://github.com/JiHuiYiYou/JiHuiYiYou-compiler/releases/download/v$version/SHA256.txt",
+            "regex": "^([a-f0-9]{64})  jhyy-installer-$version.exe$"
+        }
+    }
+}
